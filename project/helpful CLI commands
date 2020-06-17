@@ -61,3 +61,17 @@ heroku run python app/db.py
 
 # add a new summary using HTTPie
 http --json POST https://app_name.herokuapp.com/summaries/ url=https://testdriven.io
+
+
+
+##### github actions
+
+# build and tag the image
+docker build -f project/Dockerfile.prod -t \ docker.pkg.github.com/<USERNAME>/<REPOSITORY_NAME>/web:latest ./project
+
+# authenticate with docker
+docker login docker.pkg.github.com -u <USERNAME> -p <TOKEN>
+
+# push the image to the docker registry
+docker push docker.pkg.github.com/<USERNAME>/<REPOSITORY_NAME>/web:latest
+
