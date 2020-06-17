@@ -1,0 +1,63 @@
+###### docker commands
+
+# start docker container
+docker-compose up -d --build
+
+# tear down docker container
+docker-compose down
+
+# run tests
+docker-compose exec web python -m pytest
+
+
+
+###### psql & db operations
+
+# create table (this used to throw permissions errors but suddenly now it's not?)
+docker-compose exec web python app/db.py
+
+# enter postgres
+docker-compose exec web-db psql -U postgres
+
+# connect to web_dev database
+\c web_dev
+
+# list tables in web_dev database
+\dt
+
+# insert a new summary via HTTPIE
+http --json POST http://localhost:8002/summaries/ url=http://testdriven.io
+
+
+
+###### heroku
+
+# create a new app
+heroku create
+
+# log into the heroku container registry
+heroku container:login
+
+# new database
+heroku addons:create heroku-postgresql:hobby-dev
+
+# build a production image
+docker build -f project/Dockerfile.prod -t registry.heroku.com/app_name/web ./project
+
+# start container
+docker run --name fastapi-tdd -e PORT=8765 -e DATABASE_URL=sqlite://sqlite.db -p 5003:8765 registry.heroku.com/app_name/web:latest
+
+# bring container down
+docker rm fastapi-tdd -f
+
+# push image to registry (this could take up to 20 mins)
+docker push registry.heroku.com/app_name/web:latest
+
+# release the image
+heroku container:release web
+
+# run migration/s
+heroku run python app/db.py
+
+# add a new summary using HTTPie
+http --json POST https://app_name.herokuapp.com/summaries/ url=https://testdriven.io
