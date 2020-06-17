@@ -63,7 +63,7 @@ def test_app_with_db():
 
     with TestClient(app) as test_client:
 
-        #testing
+        # testing
         yield test_client
 
     # tear down
