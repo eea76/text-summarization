@@ -75,3 +75,21 @@ docker login docker.pkg.github.com -u <USERNAME> -p <TOKEN>
 # push the image to the docker registry
 docker push docker.pkg.github.com/<USERNAME>/<REPOSITORY_NAME>/web:latest
 
+
+
+#### endpoints
+
+GET all summaries:
+http GET https://salty-beyond-78596.herokuapp.com/summaries/
+
+GET single summary:
+http GET https://salty-beyond-78596.herokuapp.com/summaries/1/
+
+POST:
+http --json POST https://salty-beyond-78596.herokuapp.com/summaries/ url=https://testdriven.io
+
+PUT:
+http --json PUT https://salty-beyond-78596.herokuapp.com/summaries/2/ url=https://testdriven.io summary=super
+
+DELETE:
+http DELETE https://salty-beyond-78596.herokuapp.com/summaries/2/
