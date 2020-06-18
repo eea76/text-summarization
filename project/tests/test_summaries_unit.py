@@ -24,7 +24,6 @@ def test_create_summaries_invalid_json(test_app):
     assert response.json()["detail"][0]["msg"] == "URL scheme not permitted"
 
 
-
 def test_update_summary_invalid_url(test_app):
     response = test_app.put(
         "/summaries/1/",
