@@ -6,10 +6,6 @@ import pytest
 from app.api import crud, summaries
 
 
-def test_create_summary(test_app, monkeypatch):
-    pass
-
-
 def test_create_summaries_invalid_json(test_app):
     response = test_app.post("/summaries/", data=json.dumps({}))
     assert response.status_code == 422
@@ -26,29 +22,6 @@ def test_create_summaries_invalid_json(test_app):
     response = test_app.post("/summaries/", data=json.dumps({"url": "invalid://url"}))
     assert response.status_code == 422
     assert response.json()["detail"][0]["msg"] == "URL scheme not permitted"
-
-
-def test_read_summary(test_app, monkeypatch):
-    pass
-
-
-def test_read_summary_incorrect_id(test_app, monkeypatch):
-    pass
-
-
-def test_read_all_summaries(test_app, monkeypatch):
-    pass
-
-def test_remove_summary(test_app, monkeypatch):
-    pass
-
-
-def test_remove_summary_incorrect_id(test_app, monkeypatch):
-    pass
-
-
-def test_update_summary(test_app, monkeypatch):
-    pass
 
 
 @pytest.mark.parametrize(
@@ -104,7 +77,9 @@ def test_update_summary(test_app, monkeypatch):
         ],
     ],
 )
-def test_update_summary_invalid(test_app, monkeypatch, summary_id, payload, status_code, detail):
+def test_update_summary_invalid(
+    test_app, monkeypatch, summary_id, payload, status_code, detail
+):
     pass
 
 
@@ -126,6 +101,11 @@ def test_create_summary(test_app, monkeypatch):
         return 1
 
     monkeypatch.setattr(crud, "post", mock_post)
+
+    def mock_generate_summary(summary_id, url):
+        return None
+
+    monkeypatch.setattr(summaries, "generate_summary", mock_generate_summary)
 
     response = test_app.post("/summaries/", data=json.dumps(test_request_payload),)
 
@@ -175,7 +155,7 @@ def test_read_all_summaries(test_app, monkeypatch):
             "url": "https://testdrivenn.io",
             "summary": "summary",
             "created_at": datetime.utcnow().isoformat(),
-        }
+        },
     ]
 
     async def mock_get_all():
@@ -292,7 +272,9 @@ def test_update_summary(test_app, monkeypatch):
         ],
     ],
 )
-def test_update_summary_invalid(test_app, monkeypatch, summary_id, payload, status_code, detail):
+def test_update_summary_invalid(
+    test_app, monkeypatch, summary_id, payload, status_code, detail
+):
     async def mock_put(id, payload):
         return None
 
