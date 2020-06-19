@@ -56,20 +56,20 @@ jobs:
         run: |
           docker run \
             -d \
-            --name fastapi-tdd \
+            --name fastapi-tdd-docker \
             -e PORT=8765 \
             -e ENVIRONMENT=dev \
             -e DATABASE_TEST_URL=sqlite://sqlite.db \
             -p 5003:8765 \
             ${{ env.IMAGE }}:latest
       - name: Pytest
-        run: docker exec fastapi-tdd python -m pytest .
+        run: docker exec fastapi-tdd-docker python -m pytest .
       - name: Flake8
-        run: docker exec fastapi-tdd python -m flake8 .
+        run: docker exec fastapi-tdd-docker python -m flake8 .
       - name: Black
-        run: docker exec fastapi-tdd python -m black .
+        run: docker exec fastapi-tdd-docker python -m black .
       - name: isort
-        run: docker exec fastapi-tdd /bin/sh -c "python -m isort ./*/*.py --check-only"
+        run: docker exec fastapi-tdd-docker /bin/sh -c "python -m isort ./*/*.py --check-only"
 
   deploy:
     name: Deploy to Heroku
