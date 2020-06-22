@@ -93,3 +93,11 @@ http --json PUT https://salty-beyond-78596.herokuapp.com/summaries/2/ url=https:
 
 DELETE:
 http DELETE https://salty-beyond-78596.herokuapp.com/summaries/2/
+
+
+#######
+
+# make an alias for docker-compose
+# type 'dc' instead of 'docker-compose'
+alias dc='docker-compose'
+
